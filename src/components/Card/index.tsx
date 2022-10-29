@@ -70,15 +70,6 @@ export default function Card({ volumeInfo }: CardProps) {
                     <Text fontWeight="400" numberOfLines={3} >
                         {description + "\n\n"}
                     </Text>
-                    <HStack alignItems="center" space={4} justifyContent="space-between">
-                        <HStack alignItems="center">
-                            <Text color="coolGray.600" _dark={{
-                                color: "warmGray.200"
-                            }} fontWeight="400">
-                                6 mins ago
-                            </Text>
-                        </HStack>
-                    </HStack>
                 </Stack>
             </Box >
         </Pressable>
