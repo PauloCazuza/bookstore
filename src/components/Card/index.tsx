@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 import {
-    VStack,
     HStack,
     Heading,
     Center,
     Box,
-    FlatList,
     Text,
     AspectRatio,
     Image,
