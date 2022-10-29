@@ -1,26 +1,26 @@
 
-export interface IndustryIdentifier {
+interface IndustryIdentifier {
     type: string;
     identifier: string;
 }
 
-export interface ReadingModes {
+interface ReadingModes {
     text: boolean;
     image: boolean;
 }
 
-export interface Dimensions {
+interface Dimensions {
     height: string;
     width: string;
     thickness: string;
 }
 
-export interface PanelizationSummary {
+interface PanelizationSummary {
     containsEpubBubbles: boolean;
     containsImageBubbles: boolean;
 }
 
-export interface ImageLinks {
+interface ImageLinks {
     smallThumbnail: string;
     thumbnail: string;
     small: string;
@@ -29,7 +29,7 @@ export interface ImageLinks {
     extraLarge: string;
 }
 
-export interface VolumeInfo {
+export interface IVolumeInfo {
     title: string;
     subtitle: string;
     authors: string[];
@@ -54,21 +54,21 @@ export interface VolumeInfo {
     canonicalVolumeLink: string;
 }
 
-export interface SaleInfo {
+interface SaleInfo {
     country: string;
     saleability: string;
     isEbook: boolean;
 }
 
-export interface Epub {
+interface Epub {
     isAvailable: boolean;
 }
 
-export interface Pdf {
+interface Pdf {
     isAvailable: boolean;
 }
 
-export interface AccessInfo {
+interface AccessInfo {
     country: string;
     viewability: string;
     embeddable: boolean;
@@ -86,7 +86,7 @@ export interface IBook {
     id: string;
     etag: string;
     selfLink: string;
-    volumeInfo: VolumeInfo;
+    volumeInfo: IVolumeInfo;
     saleInfo: SaleInfo;
     accessInfo: AccessInfo;
 }
