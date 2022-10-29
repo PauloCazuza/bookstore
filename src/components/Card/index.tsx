@@ -20,9 +20,12 @@ type CardProps = {
     volumeInfo?: IVolumeInfo;
 }
 
+const uriImageNotFound = "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cindra/imagens/sem.jpg.gif/image";
+
 export default function Card({ volumeInfo }: CardProps) {
-    const uriPhoto = FindUri();
     const [favorite, setFavorite] = useState<boolean>(false);
+    const { title = "Sem título", description = "Sem descrição", subtitle = "" } = volumeInfo;
+    const uriPhoto = FindUri();
 
     function FindUri() {
         if (volumeInfo.imageLinks && volumeInfo.imageLinks?.thumbnail !== "")
@@ -33,7 +36,7 @@ export default function Card({ volumeInfo }: CardProps) {
                 return volumeInfo.imageLinks[property]
         }
 
-        return "";
+        return uriImageNotFound;
     }
 
     return (
@@ -56,18 +59,18 @@ export default function Card({ volumeInfo }: CardProps) {
                 <Stack p="4" space={3}>
                     <Stack space={2}>
                         <Heading size="md" ml="-1" numberOfLines={3}>
-                            {volumeInfo.title + "\n\n"}
+                            {title + "\n\n"}
                         </Heading>
                         <Text fontSize="xs" _light={{
                             color: "violet.500"
                         }} _dark={{
                             color: "violet.400"
                         }} fontWeight="500" ml="-0.5" mt="-1" numberOfLines={2}>
-                            {volumeInfo.subtitle + "\n\n"}
+                            {subtitle + "\n\n"}
                         </Text>
                     </Stack>
                     <Text fontWeight="400" numberOfLines={3} >
-                        {volumeInfo.description + "\n\n"}
+                        {description + "\n\n"}
                     </Text>
                     <HStack alignItems="center" space={4} justifyContent="space-between">
                         <HStack alignItems="center">
