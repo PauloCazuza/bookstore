@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { NativeBaseProvider } from "native-base"
+import Router from "./src/routes/router";
 
 export default function App() {
   return (
-    <View>
-      <Text>Projeto Inicial</Text>
-    </View>
+    <NativeBaseProvider>
+      <Router />
+    </NativeBaseProvider>
   );
 }
