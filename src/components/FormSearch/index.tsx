@@ -1,7 +1,7 @@
 import { Box, Input, Button } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 
-type FormDataProps = {
+export interface FormDataProps {
     search: string;
 }
 
@@ -33,7 +33,6 @@ export default function FormSearch({ handleClick }: FormSearchProps) {
                         placeholder="Faça sua busca aqui" />
                 )}
             />
-
         </Box>
     )
 }

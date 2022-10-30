@@ -4,7 +4,7 @@ import { ICollectionBook } from "../../interfaces/ICollectionBook";
 import api from "../../config/api";
 
 interface IBookContext {
-    searchSimpleBook(dataControl): Promise<FormatList[]>
+    searchSimpleBook(search, index?: number, maxResults?: number): Promise<FormatList[]>
 }
 
 type BookProviderProps = {
@@ -18,10 +18,13 @@ export type FormatList = {
 
 export const BookCtx = createContext<IBookContext>({} as IBookContext);
 
+const keyGoogle = "AIzaSyANuB4Wcsp0srEUZeZCLE55eM8W7rZIu8o";
+
 export function BookProvider({ children }: BookProviderProps) {
 
-    async function searchSimpleBook(dataControl) {
-        const res = await api.get<ICollectionBook>("/v1/volumes?q=" + encodeURI(dataControl.search));
+    async function searchSimpleBook(search: string, index = 0, maxResults = 10) {
+        const url = `/v1/volumes?q=${encodeURI(search)}&startIndex=${index}&maxResults=${maxResults}&key=${keyGoogle}`;
+        const res = await api.get<ICollectionBook>(url);
         const { data } = res;
         const listItemsAux: FormatList[] = [];
 
