@@ -5,6 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Screens
 import Home from '../../screens/Home';
+import Favorties from '../../screens/Favorite';
+
 const Tab = createBottomTabNavigator();
 
 export default function Router() {
@@ -19,7 +21,6 @@ export default function Router() {
                         iconName = route.name === "Home" ? "home" : iconName;
                         iconName = route.name === "Favorites" ? "star" : iconName;
 
-                        // You can return any component that you like here!
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
                     tabBarActiveTintColor: 'tomato',
@@ -27,7 +28,7 @@ export default function Router() {
                 })}
             >
                 <Tab.Screen name="Home" component={Home} />
-                <Tab.Screen name="Favorites" component={Home} />
+                <Tab.Screen name="Favorites" component={Favorties} />
             </Tab.Navigator>
         </NavigationContainer>
     );

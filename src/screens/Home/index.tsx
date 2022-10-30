@@ -5,20 +5,24 @@ import {
     Center,
     Box,
     FlatList,
-    Text
+    Switch
 } from "native-base";
-import Card from "../../components/Card";
 import FormSearch, { FormDataProps } from "../../components/FormSearch";
-import { BookCtx, FormatList } from "../../contexts/SearchBooks";
 import Spinner from "../../components/Spinner";
+import { BookCtx } from "../../contexts/SearchBooks";
 import { LoadingCtx } from "../../contexts/Loading";
+import { IFormatList } from "../../interfaces/FormatData";
+import ListCards from "../../components/ListCards";
+import { AntDesign } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Home() {
-    const [listItems, setListItems] = useState<FormatList[]>([]);
-    const { loading, setLoading } = useContext(LoadingCtx);
+    const [listItems, setListItems] = useState<IFormatList[]>([]);
+    const { loading } = useContext(LoadingCtx);
     const { searchSimpleBook } = useContext(BookCtx);
     const [form, setForm] = useState<FormDataProps>({ search: "" } as FormDataProps);
     const [indexList, setIndexList] = useState<number>(0);
+    const [modeView, setModeView] = useState<"unic" | "double">("double");
     const maxResults = 10;
 
     async function submit(dataControl: FormDataProps) {
@@ -38,37 +42,21 @@ export default function Home() {
         <VStack bgColor="gray .300" flex={1} px={5} my={5}>
             <Center>
                 <FormSearch handleClick={submit} />
+                <HStack justifyContent="flex-end" width="100%" py={2} >
+                    <Ionicons name={modeView === "unic" ? "grid-outline" : "grid-sharp"} size={25} onPress={() => setModeView(modeView === "unic" ? "double" : "unic")} />
+                </HStack>
 
                 {loading && listItems.length === 0 && < Spinner />}
 
-                {listItems.length >= 0 && (<FlatList
-                    data={listItems}
-                    marginTop={2}
-                    width="100%"
-                    keyExtractor={item => item.left.id + item.right.id}
-                    flexGrow={1}
-                    renderItem={({
-                        item: { left, right }
-                    }) => {
-                        return (
-                            <HStack py={1}>
-                                <Box flex={1} px={1} >
-                                    <Card volumeInfo={left.volumeInfo} />
-                                </Box>
-                                <Box flex={1} px={1} >
-                                    <Card volumeInfo={right.volumeInfo} />
-                                </Box>
-                            </HStack>
-                        )
-                    }}
-                    onEndReachedThreshold={0.2}
-                    ListFooterComponent={listItems.length > 0 && <Spinner />}
-                    onEndReached={() => {
+                <ListCards
+                    listItems={listItems}
+                    modeView={modeView}
+                    actionEndReached={() => {
                         const indexAux = indexList + 10;
                         setIndexList(indexAux);
                         update(form.search, indexAux, maxResults);
                     }}
-                />)}
+                />
             </Center>
         </VStack >
     )

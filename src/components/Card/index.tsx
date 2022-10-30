@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import {
     HStack,
@@ -12,20 +12,32 @@ import {
     Pressable
 } from "native-base";
 import { AntDesign } from '@expo/vector-icons';
-import { IVolumeInfo } from "../../interfaces/IBook";
+import { IBook, IVolumeInfo } from "../../interfaces/Book/IBook";
+import { FavoriteCtx } from "../../contexts/Favorites";
 
 type CardProps = {
-    volumeInfo?: IVolumeInfo;
+    book?: IBook;
 }
 
 const uriImageNotFound = "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cindra/imagens/sem.jpg.gif/image";
 
-export default function Card({ volumeInfo }: CardProps) {
-    const [favorite, setFavorite] = useState<boolean>(false);
-    const { title = "Sem título", description = "Sem descrição", subtitle = "" } = volumeInfo;
+export default function Card({ book }: CardProps) {
+    const { favorites, addFavorites, removeFavorite } = useContext(FavoriteCtx);
+    const [star, setStar] = useState<boolean>(false);
+    const { title = "Sem título", description = "Sem descrição", subtitle = "" } = book.volumeInfo;
     const uriPhoto = FindUri();
 
+    useEffect(() => {
+        verifyIsFavorite();
+    }, [favorites]);
+
+    function verifyIsFavorite() {
+        const isFavorite = favorites.findIndex((element) => element.left?.id === book.id || element.right?.id === book.id);
+        setStar(isFavorite !== -1);
+    }
+
     function FindUri() {
+        const { volumeInfo } = book;
         if (volumeInfo.imageLinks && volumeInfo.imageLinks?.thumbnail !== "")
             return volumeInfo.imageLinks.thumbnail
 
@@ -37,8 +49,15 @@ export default function Card({ volumeInfo }: CardProps) {
         return uriImageNotFound;
     }
 
+    function setFavorite() {
+        if (!star)
+            addFavorites(book);
+        else
+            removeFavorite(book);
+    }
+
     return (
-        <Pressable onPress={() => Alert.alert("teste")} onLongPress={() => setFavorite(!favorite)}  >
+        <Pressable onPress={() => Alert.alert("teste")} onLongPress={setFavorite}  >
             <Box rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _light={{
                 backgroundColor: "gray.50"
             }}>
@@ -51,7 +70,7 @@ export default function Card({ volumeInfo }: CardProps) {
                     <Center bg="rgba(0, 0, 0, 0.5)" borderBottomLeftRadius={5} _dark={{
                         bg: "yellow.400"
                     }} position="absolute" right="0" px="3" py="1.5">
-                        <AntDesign name={favorite ? "star" : "staro"} size={24} color="yellow" onPress={() => setFavorite(!favorite)} />
+                        <AntDesign name={star ? "star" : "staro"} size={24} color="yellow" onPress={setFavorite} />
                     </Center>
                 </Box >
                 <Stack p="4" space={3}>

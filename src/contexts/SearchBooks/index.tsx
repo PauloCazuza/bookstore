@@ -1,19 +1,15 @@
 import { createContext } from "react";
-import { IBook } from "../../interfaces/IBook";
-import { ICollectionBook } from "../../interfaces/ICollectionBook";
+import { IBook } from "../../interfaces/Book/IBook";
+import { ICollectionBook } from "../../interfaces/Book/ICollectionBook";
 import api from "../../config/api";
+import { IFormatList } from "../../interfaces/FormatData";
 
 interface IBookContext {
-    searchSimpleBook(search, index?: number, maxResults?: number): Promise<FormatList[]>
+    searchSimpleBook(search, index?: number, maxResults?: number): Promise<IFormatList[]>
 }
 
 type BookProviderProps = {
     children: JSX.Element;
-}
-
-export type FormatList = {
-    left: IBook;
-    right: IBook;
 }
 
 export const BookCtx = createContext<IBookContext>({} as IBookContext);
@@ -26,7 +22,7 @@ export function BookProvider({ children }: BookProviderProps) {
         const url = `/v1/volumes?q=${encodeURI(search)}&startIndex=${index}&maxResults=${maxResults}&key=${keyGoogle}`;
         const res = await api.get<ICollectionBook>(url);
         const { data } = res;
-        const listItemsAux: FormatList[] = [];
+        const listItemsAux: IFormatList[] = [];
 
         for (let i = 0; i < data.items.length; i += 2) {
             const left = data.items[i];
