@@ -27,7 +27,6 @@ export function LoadingProvider({ children }: LoadingProps) {
         api.interceptors.request.use((config) => {
             try {
                 setLoading(true);
-                console.log("entrou aqui")
             }
             catch (e) {
                 setLoading(false);
@@ -39,7 +38,6 @@ export function LoadingProvider({ children }: LoadingProps) {
         api.interceptors.response.use((config) => {
             try {
                 setLoading(false);
-                console.log("entrou aqui")
             }
             catch (e) {
                 setLoading(false);
