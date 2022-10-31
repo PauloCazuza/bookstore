@@ -1,8 +1,10 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import {
     VStack,
-    Center,
+    Text,
+    HStack,
 } from "native-base";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import FormSearch, { FormDataProps } from "../../components/FormSearch";
 import Spinner from "../../components/Spinner";
 import { BookCtx } from "../../contexts/SearchBooks";
@@ -10,42 +12,38 @@ import { LoadingCtx } from "../../contexts/Loading";
 import { IFormatList } from "../../interfaces/FormatData";
 import ListCards from "../../components/ListCards";
 import { FavoriteCtx } from "../../contexts/Favorites";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Favorties() {
-    const { favorites } = useContext(FavoriteCtx);
+    const { favorites, filterFavorites } = useContext(FavoriteCtx);
+    const [listFavorites, setListFavorites] = useState<IFormatList[]>(favorites);
     const { loading } = useContext(LoadingCtx);
     const { searchSimpleBook } = useContext(BookCtx);
     const [form, setForm] = useState<FormDataProps>({ search: "" } as FormDataProps);
 
+    useFocusEffect(
+        useCallback(() => {
+            setListFavorites(favorites);
+        }, [favorites])
+    );
+
     async function submit(dataControl: FormDataProps) {
-        setForm(dataControl);
-        const data = await searchSimpleBook(dataControl.search);
-        // setListItems(data);
+        const data = filterFavorites(dataControl.search);
+
+        setListFavorites(data);
     }
-
-    // async function update(search: string, index: number, maxResults: number) {
-    //     const data = await searchSimpleBook(search, index, maxResults);
-    //     const listAux = listItems;
-    //     const arrayConcat = listAux.concat(data);
-    //     setListItems(arrayConcat);
-    // }
-
     return (
         <VStack bgColor="gray .300" flex={1} px={5} my={5}>
-            <Center>
+            <VStack flex={1}>
                 <FormSearch handleClick={submit} />
+            </VStack>
 
-                {loading && favorites.length === 0 && < Spinner />}
-
+            {loading && favorites.length === 0 && < Spinner />}
+            <VStack flex={11}>
                 <ListCards
-                    listItems={favorites}
-                    actionEndReached={() => {
-                        // const indexAux = indexList + 10;
-                        // setIndexList(indexAux);
-                        // update(form.search, indexAux, maxResults);
-                    }}
+                    listItems={listFavorites}
                 />
-            </Center>
+            </VStack>
         </VStack >
     )
 }
