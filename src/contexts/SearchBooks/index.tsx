@@ -3,6 +3,7 @@ import { IBook } from "../../interfaces/Book/IBook";
 import { ICollectionBook } from "../../interfaces/Book/ICollectionBook";
 import api from "../../config/api";
 import { IFormatList } from "../../interfaces/FormatData";
+import { keyGoogle } from "../../keys/keyGoogle";
 
 interface IBookContext {
     searchSimpleBook(search, index?: number, maxResults?: number): Promise<IFormatList[]>
@@ -13,8 +14,6 @@ type BookProviderProps = {
 }
 
 export const BookCtx = createContext<IBookContext>({} as IBookContext);
-
-const keyGoogle = "AIzaSyANuB4Wcsp0srEUZeZCLE55eM8W7rZIu8o";
 
 export function BookProvider({ children }: BookProviderProps) {
 
