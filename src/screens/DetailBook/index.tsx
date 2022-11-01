@@ -3,6 +3,7 @@ import { AspectRatio, Heading, HStack, Image, Text, VStack } from "native-base";
 import { RouteProp, useRoute } from '@react-navigation/native';
 import axios from "axios";
 import { IBook, IVolumeInfo } from "../../interfaces/Book/IBook";
+import { ScrollView } from "react-native";
 
 type CardParamList = {
     DetailsBook: { link: string };
@@ -50,52 +51,60 @@ export default function DetailBook() {
     }
 
     return (
-        <VStack bgColor="gray .300" flex={1} px={5} my={5}>
-            <VStack flex={6} >
-                <VStack flex={1} >
-                    <Heading size="lg" color="blue.400" my={1} >
-                        {infoBook?.title}
-                    </Heading>
-                    <Heading size="sm">
-                        {infoBook?.authors}
-                    </Heading>
+        <ScrollView>
+            <VStack bgColor="gray .300" flex={1} px={5} my={5}>
+                <VStack flex={6} >
+                    <VStack flex={1} my={1}>
+                        <Heading size="lg" color="blue.400" my={1} >
+                            {infoBook?.title}
+                        </Heading>
+                        <Heading size="sm">
+                            {infoBook?.authors}
+                        </Heading>
+                    </VStack>
+                    <HStack>
+                        <VStack flex={1} alignItems="center" >
+                            <AspectRatio height={{
+                                base: 250,
+                                md: 400
+                            }} maxW={200} >
+                                <Image resizeMode="contain" source={{
+                                    uri: FindUri()
+                                }} alt="image" />
+                            </AspectRatio>
+                        </VStack>
+                        <VStack flex={1} padding={2} >
+                            <Heading size="sm" mx={2} >
+                                Editora:
+                            </Heading>
+                            <Text mx={2} marginBottom={2}>
+                                {infoBook?.publisher}
+                            </Text>
+                            <Heading size="sm" mx={2} >
+                                Data de publicação:
+                            </Heading>
+                            <Text mx={2} marginBottom={2}>
+                                {dateEnToPT(infoBook?.publishedDate)}
+                            </Text>
+                            <Heading size="sm" mx={2} >
+                                {infoBook?.pageCount} páginas | {infoBook?.language}
+                            </Heading>
+                        </VStack>
+                    </HStack>
                 </VStack>
-                <HStack>
-                    <VStack flex={1} >
-                        <AspectRatio ratio={{
-                            base: 3 / 4,
-                            md: 9 / 10
-                        }} height={{
-                            base: 250,
-                            md: 400
-                        }}>
-                            <Image resizeMode="contain" source={{
-                                uri: FindUri()
-                            }} alt="image" />
-                        </AspectRatio>
-                    </VStack>
-                    <VStack flex={1} >
-                        <Heading size="sm" mx={2} >
-                            Editora:
-                        </Heading>
-                        <Text mx={2} marginBottom={2}>
-                            {infoBook?.publisher}
-                        </Text>
-                        <Heading size="sm" mx={2} >
-                            Data de publicação:
-                        </Heading>
-                        <Text mx={2} marginBottom={2}>
-                            {dateEnToPT(infoBook?.publishedDate)}
-                        </Text>
-                        <Heading size="sm" mx={2} >
-                            {infoBook?.pageCount} páginas | {infoBook?.language}
-                        </Heading>
-                    </VStack>
-                </HStack>
+                <VStack flex={6} maxH={"300px"} backgroundColor="blue.100" borderRadius={20} marginTop={5}>
+                    <ScrollView>
+                        <HStack>
+                            <Text padding={3} textAlign="justify">
+                                <Heading size="sm">
+                                    Descrição: {"\t"}
+                                </Heading>
+                                {infoBook?.description}
+                            </Text>
+                        </HStack>
+                    </ScrollView>
+                </VStack>
             </VStack>
-            <VStack flex={6} backgroundColor="blue.100" borderRadius={20}>
-                <Text padding={5}>{infoBook?.description}</Text>
-            </VStack>
-        </VStack>
+        </ScrollView>
     )
 }

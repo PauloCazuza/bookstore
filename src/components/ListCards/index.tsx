@@ -63,4 +63,4 @@ function ListCards({ listItems, actionEndReached, modeView = "unic", loading }: 
     )
 }
 
-export default ListCards;
+export default memo(ListCards);
