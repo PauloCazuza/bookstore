@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
-import api from "../../config/api";
 import { IBook } from "../../interfaces/Book/IBook";
 import { IFormatList } from "../../interfaces/FormatData";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IFavoriteContext {
     favorites: IFormatList[];
@@ -18,10 +18,15 @@ type FavoriteProps = {
 
 export function FavoriteProvider({ children }: FavoriteProps) {
     const [favorites, setFavorites] = useState<IFormatList[]>([]);
+    const keyStore = "favorites";
 
     useEffect(() => {
-        console.log(favorites.length);
-    }, [favorites]);
+        getFavoritesSave();
+    }, []);
+
+    async function getFavoritesSave() {
+        setFavorites(await getData());
+    }
 
     function addFavorites(newFavorite: IBook) {
         const favoritesIsEmpty = favorites.length === 0;
@@ -43,6 +48,7 @@ export function FavoriteProvider({ children }: FavoriteProps) {
             }
         }
         setFavorites(favoriteLocaly);
+        storeData(favoriteLocaly);
     }
 
     function removeFavorite(book: IBook) {
@@ -57,7 +63,7 @@ export function FavoriteProvider({ children }: FavoriteProps) {
             favoriteLocaly.splice(indexObj, 1);
 
         setFavorites(favoriteLocaly);
-        console.log("removido")
+        storeData(favoriteLocaly);
     }
 
     function filterFavorites(title: string) {
@@ -87,6 +93,23 @@ export function FavoriteProvider({ children }: FavoriteProps) {
             listFilter.push({ ...objAux });
 
         return listFilter;
+    }
+
+    async function storeData(value: IFormatList[]) {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem(keyStore, jsonValue)
+        } catch (e) {
+        }
+    }
+
+    async function getData() {
+        try {
+            const jsonValue = await AsyncStorage.getItem(keyStore)
+            return jsonValue != null ? JSON.parse(jsonValue) as IFormatList[] : [];
+        } catch (e) {
+            return [];
+        }
     }
 
     return (
