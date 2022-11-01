@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Screens
-import Favorties from '../../screens/Favorite';
 import HomeStackScreen from '../Home';
+import FavoritesStackScreen from '../Favorites';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ export default function Router() {
                 })}
             >
                 <Tab.Screen name="Inicio" component={HomeStackScreen} />
-                <Tab.Screen name="Favoritos" component={Favorties} />
+                <Tab.Screen name="Favoritos" component={FavoritesStackScreen} />
             </Tab.Navigator>
         </NavigationContainer>
     );
