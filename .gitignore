@@ -1,5 +1,6 @@
 node_modules/
 src/keys/
+__tests__/
 .expo/
 dist/
 npm-debug.*
