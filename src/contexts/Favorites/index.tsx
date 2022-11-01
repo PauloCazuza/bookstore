@@ -7,6 +7,7 @@ interface IFavoriteContext {
     favorites: IFormatList[];
     addFavorites(newFavorite: IBook): void;
     removeFavorite(book: IBook): void;
+    filterFavorites(title: string);
 }
 
 export const FavoriteCtx = createContext<IFavoriteContext>({} as IFavoriteContext);
@@ -59,9 +60,38 @@ export function FavoriteProvider({ children }: FavoriteProps) {
         console.log("removido")
     }
 
+    function filterFavorites(title: string) {
+        const listFilter: IFormatList[] = [];
+        let objAux: IFormatList = {};
+
+        favorites.forEach(element => {
+            if (element.left?.volumeInfo.title.includes(title)) {
+                if (objAux.left === undefined)
+                    objAux.left = element.left;
+                else
+                    objAux.right = element.left;
+            }
+            if (element.right?.volumeInfo.title.includes(title)) {
+                if (objAux.left === undefined)
+                    objAux.left = element.right;
+                else
+                    objAux.right = element.right;
+            }
+            if (objAux.left && objAux.right) {
+                listFilter.push({ ...objAux });
+                objAux = { left: undefined, right: undefined };
+            }
+        });
+
+        if (objAux.left !== undefined && objAux.right === undefined)
+            listFilter.push({ ...objAux });
+
+        return listFilter;
+    }
+
     return (
         <FavoriteCtx.Provider
-            value={{ favorites, addFavorites, removeFavorite }}
+            value={{ favorites, addFavorites, removeFavorite, filterFavorites }}
         >
             {children}
         </FavoriteCtx.Provider>

@@ -14,14 +14,22 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { IBook, IVolumeInfo } from "../../interfaces/Book/IBook";
 import { FavoriteCtx } from "../../contexts/Favorites";
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type CardProps = {
     book?: IBook;
 }
 
+type HomeParamList = {
+    DetailsBook: { link: string };
+};
+
+
 const uriImageNotFound = "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cindra/imagens/sem.jpg.gif/image";
 
 export default function Card({ book }: CardProps) {
+    const navigation = useNavigation<NativeStackNavigationProp<HomeParamList>>();
     const { favorites, addFavorites, removeFavorite } = useContext(FavoriteCtx);
     const [star, setStar] = useState<boolean>(false);
     const { title = "Sem título", description = "Sem descrição", subtitle = "" } = book.volumeInfo;
@@ -57,7 +65,7 @@ export default function Card({ book }: CardProps) {
     }
 
     return (
-        <Pressable onPress={() => Alert.alert("teste")} onLongPress={setFavorite}  >
+        <Pressable onPress={() => navigation.navigate("DetailsBook", { link: book.selfLink })} onLongPress={setFavorite}  >
             <Box rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _light={{
                 backgroundColor: "gray.50"
             }}>

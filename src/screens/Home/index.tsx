@@ -3,9 +3,7 @@ import {
     VStack,
     HStack,
     Center,
-    Box,
-    FlatList,
-    Switch
+    Text,
 } from "native-base";
 import FormSearch, { FormDataProps } from "../../components/FormSearch";
 import Spinner from "../../components/Spinner";
@@ -13,7 +11,6 @@ import { BookCtx } from "../../contexts/SearchBooks";
 import { LoadingCtx } from "../../contexts/Loading";
 import { IFormatList } from "../../interfaces/FormatData";
 import ListCards from "../../components/ListCards";
-import { AntDesign } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Home() {
@@ -40,14 +37,16 @@ export default function Home() {
 
     return (
         <VStack bgColor="gray .300" flex={1} px={5} my={5}>
-            <Center>
+            <VStack flex={2} >
                 <FormSearch handleClick={submit} />
-                <HStack justifyContent="flex-end" width="100%" py={2} >
+                <HStack justifyContent="flex-end" alignItems="center" width="100%" py={2} >
+                    <Text> Modo de Visualização:  </Text>
                     <Ionicons name={modeView === "unic" ? "grid-outline" : "grid-sharp"} size={25} onPress={() => setModeView(modeView === "unic" ? "double" : "unic")} />
                 </HStack>
+            </VStack>
 
-                {loading && listItems.length === 0 && < Spinner />}
-
+            {loading && listItems.length === 0 && < Spinner />}
+            <VStack flex={10}>
                 <ListCards
                     listItems={listItems}
                     modeView={modeView}
@@ -57,7 +56,7 @@ export default function Home() {
                         update(form.search, indexAux, maxResults);
                     }}
                 />
-            </Center>
+            </VStack>
         </VStack >
     )
 }
