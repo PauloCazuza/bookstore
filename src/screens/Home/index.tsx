@@ -24,6 +24,7 @@ export default function Home() {
 
     async function submit(dataControl: FormDataProps) {
         setForm(dataControl);
+        setListItems([]);
         const data = await searchSimpleBook(dataControl.search);
         setListItems(data);
     }

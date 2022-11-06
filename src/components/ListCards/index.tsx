@@ -47,7 +47,7 @@ function ListCards({ listItems, actionEndReached, modeView = "unic", loading }: 
             data={listItems}
             marginTop={2}
             width="100%"
-            initialNumToRender={4}
+            initialNumToRender={2}
             removeClippedSubviews
             keyExtractor={item => item.left?.id + item.right?.id}
             flexGrow={1}
@@ -57,7 +57,7 @@ function ListCards({ listItems, actionEndReached, modeView = "unic", loading }: 
                 return modeView === "unic" ? modeUnic(left, right) : modeDouble(left, right)
             }}
             // ListEmptyComponent={() => <Center> <Text fontSize={30}> Sem Resultados. </Text> </Center>}
-            ListFooterComponent={listItems.length > 10 && <Spinner />}
+            ListFooterComponent={actionEndReached && listItems.length >= 5 && <Spinner />}
             onEndReached={actionEndReached}
         />
     )
