@@ -9,6 +9,12 @@
         }
       }
     ],
-    "@babel/preset-typescript"
+    "@babel/preset-typescript",
+    [
+      "@babel/plugin-proposal-private-property-in-object",
+      {
+        "loose": true
+      }
+    ]
   ]
 }
