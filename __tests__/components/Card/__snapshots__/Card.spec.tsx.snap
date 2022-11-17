@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly Card 1`] = `
-<RNCSafeAreaProvider
-  onInsetsChange={[Function]}
-  style={
-    Array [
-      Object {
-        "flex": 1,
-      },
-      undefined,
-    ]
-  }
-/>
-`;
-
 exports[`renders correctly Card undefined 1`] = `
 <RNCSafeAreaProvider
   onInsetsChange={[Function]}
