@@ -4,12 +4,13 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import axios from "axios";
 import { IBook, IVolumeInfo } from "../../interfaces/Book/IBook";
 import { ScrollView } from "react-native";
+import Input from "../../components/Input";
+import { uriImageNotFound } from "../../constants/Images";
 
 type CardParamList = {
     DetailsBook: { link: string };
 };
 
-const uriImageNotFound = "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cindra/imagens/sem.jpg.gif/image";
 
 export default function DetailBook() {
     const { params: { link } } = useRoute<RouteProp<CardParamList>>();
@@ -24,7 +25,6 @@ export default function DetailBook() {
         const { data: { volumeInfo } } = res;
 
         setInfoBook(volumeInfo);
-        console.log(volumeInfo.imageLinks.thumbnail)
     }
 
     function FindUri() {

@@ -16,6 +16,7 @@ import { IBook, IVolumeInfo } from "../../interfaces/Book/IBook";
 import { FavoriteCtx } from "../../contexts/Favorites";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { uriImageNotFound } from "../../constants/Images";
 
 type CardProps = {
     book?: IBook;
@@ -24,9 +25,6 @@ type CardProps = {
 type HomeParamList = {
     DetailsBook: { link: string };
 };
-
-
-const uriImageNotFound = "https://www2.camara.leg.br/atividade-legislativa/comissoes/comissoes-permanentes/cindra/imagens/sem.jpg.gif/image";
 
 export default function Card({ book }: CardProps) {
     const navigation = useNavigation<NativeStackNavigationProp<HomeParamList>>();
